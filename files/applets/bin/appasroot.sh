@@ -34,17 +34,15 @@ fi
 # Options
 layout=`cat ${theme} | grep 'USE_ICON' | cut -d'=' -f2`
 if [[ "$layout" == 'NO' ]]; then
-	option_1=" Alacritty"
-	option_2=" Thunar"
-	option_3=" Geany"
-	option_4=" Ranger"
-	option_5=" Vim"
+	option_1=" [keyd] stop"
+	option_2=" [keyd] start"
+	option_3=" [picom] stop"
+	option_4=" [picom] start"
 else
-	option_1=""
-	option_2=""
-	option_3=""
-	option_4=""
-	option_5=""
+	option_1=""
+	option_2=""
+	option_3=""
+	option_4=""
 fi
 
 # Rofi CMD
@@ -68,15 +66,13 @@ run_rofi() {
 run_cmd() {
 	polkit_cmd="pkexec env PATH=$PATH DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY"
 	if [[ "$1" == '--opt1' ]]; then
-		${polkit_cmd} alacritty
+		${polkit_cmd} systemctl stop keyd
 	elif [[ "$1" == '--opt2' ]]; then
-		${polkit_cmd} dbus-run-session thunar
+		${polkit_cmd} systemctl start keyd
 	elif [[ "$1" == '--opt3' ]]; then
-		${polkit_cmd} geany
+		${polkit_cmd} killall picom
 	elif [[ "$1" == '--opt4' ]]; then
-		${polkit_cmd} alacritty -e ranger
-	elif [[ "$1" == '--opt5' ]]; then
-		${polkit_cmd} alacritty -e vim
+		${polkit_cmd} picom &
 	fi
 }
 
